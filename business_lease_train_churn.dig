@@ -1,0 +1,15 @@
+# timezone: Asia/Kolkata
+
+schedule:
+  monthly>: 1,08:00:00
+
++env_setter:
+  docker:
+    image: "digdag/digdag-python:3.9"
+  py>: env_setter.global_setup
+  _env:
+     TD_API_KEY: ${secret:TD_API_KEY} 
+
++calling_main:
+  call>: business_lease_train_churn_main.dig
+

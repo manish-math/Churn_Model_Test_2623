@@ -1,0 +1,118 @@
+# E-Mail Notification (When workflow fails in execution)
+# +churn_BUSO_Retail_fca_counts:
+#   td>: total_fca_count_BUSO_Retail.sql
+#         # obtaining the # of fca_ids in BUSO Retail
+#   store_last_results: true
+#   preview: true
+#   engine: presto
+
+_error:
+  mail>: 
+    data: "Hi Team,\n\nChurn model BUSO scores generation has failed in the environment ${td.last_results.env} "
+    # Please check Log \nhttps://console.treasuredata.com/app/workflows/sessions/${session_id}
+  subject: churn model buso scores Workflow Fail Notification
+  to: [sharan.suresh@external.stellantis.com] 
+  # to: [sumesh.iyer@external.stellantis.com]
+  # cc: [ maanvi.anchan@external.stellantis.com, manish.bahirat@external.stellantis.com, kiruthiga.r@external.stellantis.com,sharan.suresh@external.stellantis.com , rukmani.v@external.stellantis.com]
+
+
+_export:
+  !include : config_churn_model_buso_scores.yml
+  td:
+    database: sandbox_data_science
+    engine: presto
+
++churn_model_buso_score_hist:
+ td>: churn_model_buso_score_hist.sql
+  
++map_with_ppo_buso_score:
+ td>: map_with_ppo_buso_score.sql
+ create_table: mathco_churn_buso_ppo_current_score_table 
+
++churn_mapped_ppo_buso_historic:
+  td>: churn_mapped_ppo_buso_historic.sql
+
+# timezone: Asia/Kolkata
+
+# schedule:
+  # daily>: 10:15:00
+
+# +buso_score_date_zero_record_qc_check:
+#   td>: buso_score_date_zero_record_check.sql
+#   store_last_results: true
+#   preview: true
+#   engine: presto
+
+# +run_if_param_is_true:
+#  if>: ${td.last_results.qc_check_date} 
+#  _do:
+#    +churn_model_buso_score_hist:
+#     td>: churn_model_buso_score_hist.sql
+  
+#    +map_with_ppo_buso_score:
+#     td>: map_with_ppo_buso_score.sql
+#     create_table: mathco_churn_buso_ppo_current_score_table 
+
+# +score_date_zero_record_qc_check__buso_ppo:
+#   td>: score_date_zero_record_check_buso.sql
+#   store_last_results: true
+#   preview: true
+#   engine: presto
+
+# #  _else_do:
+# +run_if_var_is_true:
+#   if>: ${td.last_results.qc_check} 
+#   _do:
+#     +churn_mapped_ppo_buso_historic:
+#       td>: churn_mapped_ppo_buso_historic.sql
+
+#     +churn_BUSO_Retail_fca_counts:
+#       td>: total_fca_count_BUSO_Retail.sql
+#         # obtaining the # of fca_ids in BNSO Retail
+#       store_last_results: true
+#       preview: true
+#       engine: presto
+
+#     +mail:
+#       mail>: buso_scores_success.html
+#       html: true
+#       subject: Churn Model BUSO Score Generation Success Notification 
+#       # to: [maanvi.anchan@external.stellantis.com] 
+#       to: [sumesh.iyer@external.stellantis.com]
+#       cc: [ maanvi.anchan@external.stellantis.com, manish.bahirat@external.stellantis.com, kiruthiga.r@external.stellantis.com,sharan.suresh@external.stellantis.com , rukmani.v@external.stellantis.com]   
+
+#   _else_do:
+#     +run_if_param_is_true:
+#      if>: ${td.last_results.zero_record_qc} 
+#      _do:
+#       +churn_BUSO_Retail_fca_counts:
+#        td>: total_fca_count_BUSO_Retail.sql
+#             # obtaining the # of fca_ids in BUSO Retail
+#        store_last_results: true
+#        preview: true
+#        engine: presto  
+
+#       +mail:
+#        mail>: buso_qc1fail.html
+#        html: true
+#        subject: Churn Model BUSO Scores Workflow Fail Notification
+#       #  to: [maanvi.anchan@external.stellantis.com] 
+#        to: [sumesh.iyer@external.stellantis.com]
+#        cc: [maanvi.anchan@external.stellantis.com, manish.bahirat@external.stellantis.com, kiruthiga.r@external.stellantis.com,sharan.suresh@external.stellantis.com , rukmani.v@external.stellantis.com]  
+
+
+#      _else_do:
+#       #  +churn_BNSO_Lease_Retail_fca_counts:
+#       #   td>: total_fca_count_BNSO_Lease_Retail.sql
+#       #       # obtaining the # of fca_ids in BNSO Retail
+#       #   store_last_results: true
+#       #   preview: true
+#       #   engine: presto 
+                      
+#        +mail:
+#         mail>: buso_qc2fail.html
+#         html: true
+#         subject: Churn Model BUSO Scores Workflow Fail Notification
+#         # to: [maanvi.anchan@external.stellantis.com] 
+#         to: [sumesh.iyer@external.stellantis.com]
+#         cc: [ maanvi.anchan@external.stellantis.com, manish.bahirat@external.stellantis.com, kiruthiga.r@external.stellantis.com,sharan.suresh@external.stellantis.com , rukmani.v@external.stellantis.com]

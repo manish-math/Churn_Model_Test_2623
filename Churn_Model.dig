@@ -1,0 +1,63 @@
+# _export:
+  # !include : config_train.yml
+#   td:
+#     database: ${database}
+#     engine: presto
+
+# timezone: Asia/Kolkata
+
+#---------------Training ADS-------------------#
++prepare:
+  _parallel: true
+  # # workflow call for bnso retail training ads creation 
+  # +workflow_call_for_bnso_retail_churn:
+  #  call>: bnso_retail_train_churn.dig
+
+  # # # workflow call for bnso lease training ads creation 
+  # +workflow_call_for_bnso_lease_churn:
+  #  call>: bnso_lease_train_churn.dig
+  
+  # workflow call for buso retail training ads creation 
+  +workflow_call_for_buso_retail_churn:
+   call>: buso_retail_train_churn.dig
+
+  # # # workflow call for business_retail training ads creation 
+# +workflow_call_for_business_retail_train_churn:
+#   call>: business_retail_train_churn.dig
+
+  # # # workflow call for business_lease training ads creation 
+  #  +workflow_call_for_business_lease_train_churn:
+  #    call>: business_lease_train_churn.dig
+
+
+#---------------Scoring ADS-------------------#
+
+# +prepare:
+#   _parallel: true
+# #   # # workflow call for bnso retail scoring ads creation 
+#   +workflow_call_for_bnso_retail_score_churn:
+#     call>: bnso_retail_score_churn.dig
+
+# # #   # workflow call for bnso lease scoring ads creation 
+#   +workflow_call_for_bnso_lease_score_churn:
+#     call>: bnso_lease_score_churn.dig
+
+# # workflow call for buso retail scoring ads creation 
+# +workflow_call_for_buso_retail_score_churn:
+#   call>: buso_retail_score_churn.dig
+
+# # workflow call for business retail scoring ads creation 
+# +workflow_call_for_business_retail_score_churn:
+#   call>: business_retail_score_churn.dig
+
+# # workflow call for business lease scoring ads creation 
+# +workflow_call_for_business_lease_score_churn:
+#   call>: business_lease_score_churn.dig
+
+# # workflow call for buso scores generation 
+# +workflow_call_for_buso_score_generation:
+#   call>: Churn_model_buso_score_generation.dig
+
+
+
+ 

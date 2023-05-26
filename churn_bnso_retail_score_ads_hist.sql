@@ -1,0 +1,1 @@
+insert into churn_bnso_retail_score_ads_hist select * from churn_bnso_retail_scoring_ads

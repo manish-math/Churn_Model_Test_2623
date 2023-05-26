@@ -1,0 +1,110 @@
+_export:
+  !include :  config_business_retail_score.yml
+  td:
+    database: ${database}
+    engine: presto
+
++loadData_score_base_ref_date:
+    docker:
+      image: "digdag/digdag-python:3.9"
+    py>: score_ref_date.score_ref_date_set 
+    _env:
+      database: ${database}
+      engine: presto
+      TD_API_KEY: ${secret:TD_API_KEY}
+
+# +churn_business_retail_score_base_exclusion:
+#   td>: churn_business_score_base_exclusion.sql
+#   create_table: churn_bnso_buso_retail_lease_score
+#   engine: presto      
+
++loadData_business_retail_score_churn_base_part1:
+  td>: churn_business_retail_score_base_part1.sql
+  create_table: churn_business_retail_score_base
+  engine: presto
+
++prepare:
+  _parallel: true
+
+  +leads_submit_last90_days_businsess_retail_score:
+    td>: leads_submit_last90_days_businsess_retail_train.sql
+    create_table: leads_submit_last90_days_businsess_retail_scoring
+    engine: presto
+
+  +stellantis_tenure_business_retail_churn_score:
+    td>: stellantis_tenure_business_retail_churn_train.sql
+    create_table: stellantis_tenure_business_retail_churn_scoring
+    engine: presto  
+
+  +serv_tat_business_retail_churn_score:
+    td>: serv_tat_business_retail_churn_train.sql
+    create_table: serv_tat_business_retail_churn_scoring
+    engine: presto
+
+  +num_vins_disposed_business_retail_churn_score:
+    td>: num_vins_disposed_business_retail_churn_train.sql
+    create_table: num_vins_disposed_business_retail_churn_scoring
+    engine: presto
+
+  +days_since_last_service_business_retail_churn_score:
+    td>: days_since_last_service_business_retail_churn_train.sql
+    create_table: days_since_last_service_business_retail_churn_scoring
+    engine: presto
+
+  +mileage_recorded_from_last_service_for_active_owned_std_business_retail_churn_score:
+    td>: mileage_recorded_from_last_service_for_active_owned_std_business_retail_churn_train.sql
+    create_table: mileage_recorded_from_last_service_for_active_owned_std_business_retail_churn_scoring
+    engine: presto
+
+  +nvehicles_brand_jeep_ram_dodge_active_std_business_retail_churn_score:
+    td>: nvehicles_brand_jeep_ram_dodge_active_std_business_retail_churn_train.sql
+    create_table: nvehicles_brand_jeep_ram_dodge_active_std_business_retail_churn_scoring
+    engine: presto
+
+  +nVehicles_purchased_which_were_recall_business_retail_churn_score:
+    td>: nVehicles_purchased_which_were_recall_business_retail_churn_train.sql
+    create_table: nVehicles_purchased_which_were_recall_business_retail_churn_scoring
+    engine: presto
+
+  +nVehicles_purchased_ft_business_retail_churn_score:
+    td>: nVehicles_purchased_ft_business_retail_churn_train.sql
+    create_table: nVehicles_purchased_ft_business_retail_churn_scoring
+    engine: presto
+
+  +nservices_active_vehicle_business_retail_churn_score:
+    td>: nservices_active_vehicle_business_retail_churn_train.sql
+    create_table: nservices_active_vehicle_business_retail_churn_scoring
+    engine: presto
+
+  +total_spend_total_serv_business_retail_churn_score:
+    td>: total_spend_total_serv_business_retail_churn_train.sql
+    create_table: total_spend_total_serv_business_retail_churn_scoring
+    engine: presto   
+
+  +single_multi_veh_flag_business_retail_churn_score:
+    td>: single_multi_veh_flag_business_retail_churn_train.sql
+    create_table: single_multi_veh_flag_business_retail_churn_scoring
+    engine: presto
+    
+  +avg_days_between_disposals_business_retail_churn_score:
+    td>: avg_days_between_disposals_business_retail_churn_train.sql
+    create_table: avg_days_between_disposals_business_retail_churn_scoring
+    engine: presto
+  
+  +avg_days_between_purchases_business_retail_churn_score:
+    td>: avg_days_between_purchases_business_retail_churn_train.sql
+    create_table: avg_days_between_purchases_business_retail_churn_scoring
+    engine: presto
+
+
++loadData_final_rts_churn_business_retail_score_ADS:
+  td>: Business_retail_churn_score_ADS.sql
+  create_table: churn_business_retail_score_ADS
+  engine: presto
+
++loadData_final_rts_churn_business_retail_score_ads_hist:
+  td>: churn_businses_retail_score_ads_hist.sql
+  engine: presto
+
+
+

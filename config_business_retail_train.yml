@@ -1,0 +1,14 @@
+database: sandbox_data_science
+business_retail_base: sandbox_data_science.churn_business_retail_train_base
+curr_date: CURRENT_DATE
+veh_interest : ${unification_db}.enriched_cms_vhcl_intrt
+cntct_actv : ${unification_db}.enriched_cms_cntct_actvy
+enrich_case: ${unification_db}.enriched_gccra_case
+owner: ${unification_db}.enriched_cms_consmvhclownshp
+stg_labr_info : ${stg_db}.cms_serv_labr_info
+stg_serv_rec : ${stg_db}.cms_sm_repordr_serv_rec
+stg_lab_part : ${stg_db}.cms_sm_repordr_serv_labr_part
+unif_serv_rec : ${unification_db}.enriched_cms_sm_repordr_serv_rec
+stg_recal_sseo_vin : ${stg_db}.cms_recal_sseo_vin
+stg_recal_code : ${stg_db}.cms_recal_code
+enr_cons_demo : ${unification_db}.enriched_cms_cons_demo_info

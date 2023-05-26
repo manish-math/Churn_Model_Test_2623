@@ -1,0 +1,74 @@
+# E-Mail Notification (When workflow fails in execution)
+# _error:
+#   mail>: 
+#     data: "Hi Team,\n\nchurn model scores generation has failed. "
+#     # Please check Log \nhttps://console.treasuredata.com/app/workflows/sessions/${session_id}
+#   subject: churn model scores Workflow Fail Notification 
+#   to: [sumesh.iyer@external.stellantis.com]
+#   cc: [ maanvi.anchan@external.stellantis.com, manish.bahirat@external.stellantis.com, kiruthiga.r@external.stellantis.com, sharan.suresh@external.stellantis.com, rukmani.v@external.stellantis.com]
+
+
+_export:
+  !include : config_churn_model_scores.yml
+  td:
+    database: sandbox_data_science
+    engine: presto
+
+timezone: Asia/Kolkata
+
+# schedule:
+#    minutes_interval>: 180
+
+
+# schedule:
+  # daily>: 10:30:00
+
+# +mathco_ppo_churn_scores_current_date:
+#   td>: mathco_ppo_churn_scores_current_date.sql
+#   create_table: mathco_churn_scores_current_date
+
+# +churn_model_score_hist:
+#   td>: churn_model_score_hist.sql
+#   # create_table: churn_model_score_hist
+  
+# +map_with_ppo_score:
+#   td>: map_with_ppo_score.sql
+#   create_table: mathco_churn_ppo_current_score_table 
+
+  
+# +churn_mapped_ppo_historic:
+#   td>: churn_mapped_ppo_historic.sql
+#   # create_table: mapped_ppo_churn_model_score_hist 
+
+
+# +churn_current_fca_counts:
+#   td>: current_counts_tble.sql
+#   # obtaining the # of fca_ids of current table
+#   store_last_results: true
+#   preview: true
+#   engine: presto
+#       # +echo>: 'successfully ran'
+
+# +churn_BNSO_Lease_Retail_fca_counts:
+#   td>: total_fca_count_BNSO_Lease_Retail.sql
+#   # obtaining the # of fca_ids in BNSO Retail
+#   store_last_results: true
+#   preview: true
+#   engine: presto
+
+# +churn_BNSO_Lease_fca_counts:
+#   td>: total_fca_count_BNSO_Lease.sql
+#   # obtaining the # of fca_ids in BNSO Lease
+#   store_last_results: true
+#   preview: true
+#   engine: presto
+
+# +run_if_param_is_true:
+  # Email Notification
+# +mail:
+#   mail>: success.html
+#   html: true
+#   subject: churn model score generation Success Notification 
+  
+#   to: [sumesh.iyer@external.stellantis.com]
+#   cc: [ maanvi.anchan@external.stellantis.com, manish.bahirat@external.stellantis.com, kiruthiga.r@external.stellantis.com, sharan.suresh@external.stellantis.com, rukmani.v@external.stellantis.com]

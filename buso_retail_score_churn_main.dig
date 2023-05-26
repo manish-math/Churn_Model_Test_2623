@@ -1,0 +1,149 @@
+_export:
+  !include :  config_buso_retail_score.yml
+  td:
+    database: ${database}
+    engine: presto
+
++loadData_scoring_base_ref_date:
+    docker:
+      image: "digdag/digdag-python:3.9"
+    py>: score_ref_date.score_ref_date_set 
+    _env:
+      database: ${database}
+      engine: presto
+      TD_API_KEY: ${secret:TD_API_KEY}
+
++churn_buso_retail_score_base_part1:
+  td>: churn_buso_retail_score_base_part1.sql
+  create_table: churn_buso_retail_scoring_base_part1
+  engine: presto
+
++churn_buso_retail_score_base_part2:
+  td>: churn_buso_retail_score_base_part2.sql
+  create_table: churn_buso_retail_score_base
+  engine: presto
+
+  
++prepare:
+  _parallel: true
+
+  +single_multi_veh_flag_buso_churn_scoring:
+    td>: single_multi_veh_flag_buso_churn_train.sql
+    create_table: single_multi_veh_flag_buso_churn_scoring
+    engine: presto
+  
+  +day_since_last_service_buso_retail_churn_scoring:
+    td>: day_since_last_service_buso_retail_train.sql
+    create_table: day_since_last_service_buso_retail_churn_scoring
+    engine: presto
+
+  +leads_submit_last90_days_buso_retail_churn_scoring:
+    td>: leads_submit_last90_days_buso_retail_train.sql
+    create_table: leads_submit_last90_days_buso_retail_churn_scoring
+    engine : presto
+    
+  +avg_vin_ownership_tenure_buso_retail_churn_scoring:
+    td>: avg_vin_ownership_tenure_buso_retail_train.sql
+    create_table: avg_vin_ownership_tenure_buso_retail_churn_scoring
+    engine : presto
+
+
+  +stellantis_tenure_buso_retail_churn_scoring:
+    td>: stellantis_tenure_buso_retail_churn_train.sql
+    create_table: stellantis_tenure_buso_retail_churn_scoring
+    engine : presto
+
+  +nVehicles_purchased_buso_retail_churn_scoring:
+    td>: nVehicles_purchased_buso_retail_churn_train.sql
+    create_table: nVehicles_purchased_buso_retail_churn_scoring
+    engine : presto
+
+  +serv_tat_buso_retail_churn_scoring:
+    td>: serv_tat_buso_retail_churn_train.sql
+    create_table: serv_tat_buso_retail_churn_scoring
+    engine : presto
+
+  +total_spend_total_serv_buso_retail_churn_scoring:
+    td>: total_spend_total_serv_buso_retail_churn_train.sql
+    create_table: total_spend_total_serv_buso_retail_churn_scoring
+    engine : presto
+
+  +disp_ratio_buso_retail_churn_scoring:
+    td>: disp_ratio_buso_retail_churn_train.sql
+    create_table: disp_ratio_buso_retail_churn_scoring
+    engine : presto
+
+
+  +retail_recall_open_sseo_std_buso_retail_churn_scoring:
+    td>: retail_recall_open_sseo_std_buso_retail_churn_train.sql
+    create_table: retail_recall_open_sseo_std_buso_retail_churn_scoring
+    engine : presto
+
+  +recall_type_safety_buso_retail_churn_scoring:
+    td>: recall_type_safety_buso_retail_churn_train.sql
+    create_table: recall_type_safety_buso_retail_churn_scoring
+    engine : presto
+
+  +recall_type_federal_emissn_buso_retail_churn_scoring:
+    td>: recall_type_federal_emissn_buso_retail_churn_train.sql
+    create_table: recall_type_federal_emissn_buso_retail_churn_scoring
+    engine : presto
+
+  +recall_type_customer_satisfaction_buso_retail_churn_scoring:
+    td>: recall_type_customer_satisfaction_buso_retail_churn_train.sql
+    create_table: recall_type_customer_satisfaction_buso_retail_churn_scoring
+    engine : presto
+
+  +nVehicles_purchased_which_were_recall_buso_retail_churn_scoring:
+    td>: nVehicles_purchased_which_were_recall_buso_retail_churn_train.sql
+    create_table: nVehicles_purchased_which_were_recall_buso_retail_churn_scoring
+    engine : presto
+
+  +nDaysSince_last_vehcile_purchase_buso_retail_churn_scoring:
+    td>: nDaysSince_last_vehcile_purchase_buso_retail_churn_train.sql
+    create_table: nDaysSince_last_vehcile_purchase_buso_retail_churn_scoring
+    engine : presto
+
+  +nvehicles_brand_jeep_ram_dodge_active_std_buso_retail_churn_scoring:
+    td>: nvehicles_brand_jeep_ram_dodge_active_std_buso_retail_churn_train.sql
+    create_table: nvehicles_brand_jeep_ram_dodge_active_std_buso_retail_churn_scoring
+    engine : presto
+
+  +no_of_Vins_owned_in_household_buso_retail_churn_scoring:
+    td>: no_of_Vins_owned_in_household_buso_retail_churn_train.sql
+    create_table: no_of_Vins_owned_in_household_buso_retail_churn_scoring
+    engine : presto
+
+  +num_vins_disposed_household_buso_retail_churn_scoring:
+    td>: num_vins_disposed_household_buso_retail_churn_train.sql
+    create_table: num_vins_disposed_household_buso_retail_churn_scoring
+    engine : presto
+
+  +mileage_recorded_from_last_service_for_active_owned_buso_retail_churn_scoring:
+    td>: mileage_recorded_from_last_service_for_active_owned_buso_retail_churn_train.sql
+    create_table: mileage_recorded_from_last_service_for_active_owned_buso_retail_churn_scoring
+    engine : presto
+
+  +fuel_type_buso_retail_churn_scoring:
+    td>: fuel_type_buso_retail_churn_train.sql
+    create_table: fuel_type_buso_retail_churn_scoring
+    engine : presto
+
+  +num_new_vins_pur_last_5_years_buso_retail_churn_scoring:
+    td>: num_new_vins_pur_last_5_years_buso_retail_churn_train.sql
+    create_table: num_new_vins_pur_last_5_years_buso_retail_churn_scoring
+    engine : presto
+
+  +no_of_hands_exchanged_buso_retail_churn_scoring:
+    td>: no_of_hands_exchanged_buso_retail_churn_train.sql
+    create_table: no_of_hands_exchanged_buso_retail_churn_scoring
+    engine: presto
+
++loadData_final_rts_churn_buso_retail_score_ADS:
+  td>: BUSO_retail_churn_scoring_ADS.sql
+  create_table: churn_buso_retail_scoring_ADS
+  engine: presto
+
++loadData_final_rts_churn_buso_retail_score_ads_hist:
+  td>: churn_buso_retail_score_ads_hist.sql
+  engine: presto

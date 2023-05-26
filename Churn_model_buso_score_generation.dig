@@ -1,0 +1,14 @@
+timezone: Asia/Kolkata
+
+schedule:
+  daily>: 15:00:00
+
++env_setter_scores:
+  docker:
+    image: "digdag/digdag-python:3.9"
+  py>: env_setter.global_setup
+  _env:
+     TD_API_KEY: ${secret:TD_API_KEY} 
+
++calling_main:
+  call>: Churn_model_buso_score_generation_main.dig

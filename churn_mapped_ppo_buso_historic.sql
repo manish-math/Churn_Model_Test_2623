@@ -1,0 +1,14 @@
+create table if not exists mathco_churn_buso_ppo_historic_score_table
+as Select *
+from mathco_churn_buso_ppo_current_score_table
+
+;
+Insert into mathco_churn_buso_ppo_historic_score_table
+Select *
+from mathco_churn_buso_ppo_current_score_table;
+
+Insert into mathco_churn_ppo_historic_score_table
+select fca_id ,hh_id,
+population_flag ,flag,churn_30_prob  as churn_30_probability,churn_30_decile,
+null as churn_90_probability,null as churn_90_decile,
+in_market_prob,in_market_decile, current_brand ,current_nameplate ,current_trim, first_preferred_nameplate, first_preferred_brand, first_preferred_score ,second_preferred_nameplate ,second_preferred_brand, second_preferred_score, third_preferred_nameplate, third_preferred_brand ,third_preferred_score, scoring_date from mathco_churn_buso_ppo_current_score_table;

@@ -1,0 +1,1 @@
+insert into churn_buso_retail_train_ads_hist select *,cast(CURRENT_DATE as VARCHAR) as ads_generation_date from churn_buso_retail_train_ads;

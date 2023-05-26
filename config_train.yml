@@ -1,0 +1,14 @@
+database: sandbox_data_science
+# bnso_lease_train_base: sandbox_data_science.churn_bnso_lease_score_base
+curr_date: CURRENT_DATE
+veh_interest : CDP_UNIFICATION_QA_V2.enriched_cms_vhcl_intrt
+cntct_actv : cdp_unification_qa_v2.enriched_cms_cntct_actvy
+enrich_case: cdp_unification_qa_v2.enriched_gccra_case
+owner: cdp_unification_qa_v2.enriched_cms_consmvhclownshp
+stg_labr_info : fca_stg_qa.cms_serv_labr_info
+stg_serv_rec : fca_stg_qa.cms_sm_repordr_serv_rec
+stg_lab_part : fca_stg_qa.cms_sm_repordr_serv_labr_part
+unif_serv_rec : cdp_unification_qa_v2.enriched_cms_sm_repordr_serv_rec
+stg_recal_sseo_vin : fca_stg_qa.cms_recal_sseo_vin
+stg_recal_code : fca_stg_qa.cms_recal_code
+enr_cons_demo : cdp_unification_qa_v2.enriched_cms_cons_demo_info

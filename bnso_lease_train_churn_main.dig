@@ -1,0 +1,152 @@
+_export:
+  !include :  config_train_bnso_lease.yml
+  td:
+    database: ${database}
+    engine: presto
+
++loadData_training_base_ref_date:
+    docker:
+      image: "digdag/digdag-python:3.9"
+    py>: train_ref_date.train_ref_date_set
+    _env:
+      database: ${database}
+      engine: presto
+      TD_API_KEY: ${secret:TD_API_KEY}
+
++loadData_training_table_base_ref_date:
+    docker:
+      image: "digdag/digdag-python:3.9"
+    py>: train_ref_date.train_table_ref_date_set 
+    _env:
+      database: ${database}
+      engine: presto
+      TD_API_KEY: ${secret:TD_API_KEY}
+
++loadData_bnso_lease_train_churn_base_part1:
+  td>: churn_bnso_lease_train_base_part1.sql
+  create_table: churn_bnso_lease_base_part1
+  engine: presto
+
++loadData_bnso_lease_train_churn_base_part2:
+  td>: churn_bnso_lease_train_base_part2.sql
+  create_table: churn_bnso_lease_train_base
+  engine: presto
+
++prepare:
+  _parallel: true
+
+  +single_multi_veh_flag_bnso_lease_churn_train:
+    td>: single_multi_veh_flag_bnso_lease_churn_train.sql
+    create_table: single_multi_veh_flag_bnso_lease_churn_train
+    engine: presto
+
+
+  +day_since_last_service_bnso_lease:
+    td>: day_since_last_service_bnso_lease_train.sql
+    create_table: day_since_last_service_bnso_lease_churn_train
+    engine: presto
+
+  +leads_submit_last90_days_bnso_lease_churn_train:
+    td>: leads_submit_last90_days_bnso_lease_churn_train.sql
+    create_table: leads_submit_last90_days_bnso_lease_churn_train
+    engine: presto
+
+
+  +stellantis_tenure_bnso_lease_churn_train:
+    td>: stellantis_tenure_bnso_lease_churn_train.sql
+    create_table: stellantis_tenure_bnso_lease_churn_train
+    engine: presto
+
+  +total_spend_total_serv_bnso_lease_churn_train:
+    td>: total_spend_total_serv_bnso_lease_churn_train.sql
+    create_table: total_spend_total_serv_bnso_lease_churn_train
+    engine: presto
+
+  +nVehicles_purchased_which_were_recall_bnso_lease_churn_train:
+    td>: nVehicles_purchased_which_were_recall_bnso_lease_churn_train.sql
+    create_table: nVehicles_purchased_which_were_recall_bnso_lease_churn_train
+    engine: presto
+
+  +nservices_leased_vehicle_bnso_lease_churn_train:
+    td>: nservices_leased_vehicle_bnso_lease_churn_train.sql
+    create_table: nservices_leased_vehicle_bnso_lease_churn_train
+    engine: presto
+
+  +nVehicles_leased_act_inact_bnso_lease_churn_train:
+    td>: nVehicles_leased_act_inact_bnso_lease_churn_train.sql
+    create_table: nVehicles_leased_act_inact_bnso_lease_churn_train
+    engine: presto
+
+  +days_to_lease_end_bnso_lease_churn_train:
+    td>: days_to_lease_end_bnso_lease_churn_train.sql
+    create_table: days_to_lease_end_bnso_lease_churn_train
+    engine: presto
+    
+  +nVehicles_leased_act_bnso_lease_churn_train:
+    td>: nVehicles_leased_act_bnso_lease_churn_train.sql
+    create_table: nVehicles_leased_act_bnso_lease_churn_train
+    engine: presto  
+
+  +num_vins_disposed_household_bnso_lease_churn_train:
+    td>: num_vins_disposed_household_bnso_lease_churn_train.sql
+    create_table: num_vins_disposed_household_bnso_lease_churn_train
+    engine: presto
+
+  +no_of_Vins_owned_in_household_bnso_lease_churn_train:
+    td>: no_of_Vins_owned_in_household_bnso_lease_churn_train.sql
+    create_table: no_of_Vins_owned_in_household_bnso_lease_churn_train
+    engine: presto
+
+  +serv_tat_bnso_lease_churn_train:
+    td>: serv_tat_bnso_lease_churn_train.sql
+    create_table: serv_tat_bnso_lease_churn_train
+    engine: presto   
+
+  +avg_days_between_services_bnso_lease_churn_train:
+    td>: avg_days_between_services_bnso_lease_churn_train.sql
+    create_table: avg_days_between_services_bnso_lease_churn_train
+    engine: presto 
+
+  +income_band_bnso_lease_churn_train:
+    td>: income_band_bnso_lease_churn_train.sql
+    create_table: income_band_bnso_lease_churn_train
+    engine: presto 
+
+  +in_market_prob_bnso_lease_churn_train:
+    td>: in_market_prob_bnso_lease_churn_train.sql
+    create_table: in_market_prob_bnso_lease_churn_train
+    engine: presto 
+
+  +nDaysSince_last_vehcile_purchase_bnso_lease_churn_train:
+    td>: nDaysSince_last_vehcile_purchase_bnso_lease_churn_train.sql
+    create_table: nDaysSince_last_vehcile_purchase_bnso_lease_churn_train
+    engine: presto 
+
+  +recall_open_sseo_lease_std_bnso_lease_churn_train:
+    td>: recall_open_sseo_lease_std_bnso_lease_churn_train.sql
+    create_table: recall_open_sseo_lease_std_bnso_lease_churn_train
+    engine : presto
+
+  +recall_type_safety_bnso_lease_churn_train:
+    td>: recall_type_safety_bnso_lease_churn_train.sql
+    create_table: recall_type_safety_bnso_lease_churn_train
+    engine : presto
+
+  +recall_type_federal_emissn_bnso_lease_churn_train:
+    td>: recall_type_federal_emissn_bnso_lease_churn_train.sql
+    create_table: recall_type_federal_emissn_bnso_lease_churn_train
+    engine : presto
+
+  +recall_type_customer_satisfaction_bnso_lease_churn_train:
+    td>: recall_type_customer_satisfaction_bnso_lease_churn_train.sql
+    create_table: recall_type_customer_satisfaction_bnso_lease_churn_train
+    engine : presto
+
++loadData_final_rts_churn_bnso_lease_ADS:
+  td>: BNSO_lease_churn_train_ADS.sql
+  create_table: churn_bnso_lease_train_ads_${train_table_ref_date}
+  engine: presto
+
+# +loadData_final_rts_churn_bnso_lease_train_ADS_hist:
+#   td>: churn_bnso_lease_train_ads_hist.sql
+#   engine: presto

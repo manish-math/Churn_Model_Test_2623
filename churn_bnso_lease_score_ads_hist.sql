@@ -1,0 +1,1 @@
+insert into churn_bnso_lease_score_ads_hist select * from churn_bnso_lease_scoring_ads
